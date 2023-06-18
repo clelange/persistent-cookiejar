@@ -77,16 +77,16 @@ It does nothing if the URL's scheme is not HTTP or HTTPS.
 
 ```go
 type Options struct {
-	// PublicSuffixList is the public suffix list that determines whether
-	// an HTTP server can set a cookie for a domain.
-	//
-	// If this is nil, the public suffix list implementation in golang.org/x/net/publicsuffix
-	// is used.
-	PublicSuffixList PublicSuffixList
+    // PublicSuffixList is the public suffix list that determines whether
+    // an HTTP server can set a cookie for a domain.
+    //
+    // If this is nil, the public suffix list implementation in golang.org/x/net/publicsuffix
+    // is used.
+    PublicSuffixList PublicSuffixList
 
-	// Filename holds the file to use for storage of the cookies.
-	// If it is empty, the value of DefaultCookieFile will be used.
-	Filename string
+    // Filename holds the file to use for storage of the cookies.
+    // If it is empty, the value of DefaultCookieFile will be used.
+    Filename string
 }
 ```
 
@@ -96,17 +96,17 @@ type Options struct {
 
 ```go
 type PublicSuffixList interface {
-	// PublicSuffix returns the public suffix of domain.
-	//
-	// TODO: specify which of the caller and callee is responsible for IP
-	// addresses, for leading and trailing dots, for case sensitivity, and
-	// for IDN/Punycode.
-	PublicSuffix(domain string) string
+    // PublicSuffix returns the public suffix of domain.
+    //
+    // TODO: specify which of the caller and callee is responsible for IP
+    // addresses, for leading and trailing dots, for case sensitivity, and
+    // for IDN/Punycode.
+    PublicSuffix(domain string) string
 
-	// String returns a description of the source of this public suffix
-	// list. The description will typically contain something like a time
-	// stamp or version number.
-	String() string
+    // String returns a description of the source of this public suffix
+    // list. The description will typically contain something like a time
+    // stamp or version number.
+    String() string
 }
 ```
 
