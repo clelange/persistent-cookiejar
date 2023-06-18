@@ -1751,13 +1751,13 @@ func TestLockFile(t *testing.T) {
 }
 
 // jarTest encapsulates the following actions on a jar:
-//   1. Perform SetCookies with fromURL and the cookies from setCookies.
-//      (Done at time tNow + 0 ms.)
-//   2. Check that the entries in the jar matches content.
-//      (Done at time tNow + 1001 ms.)
-//   3. For each query in tests: Check that Cookies with toURL yields the
-//      cookies in want.
-//      (Query n done at tNow + (n+2)*1001 ms.)
+//  1. Perform SetCookies with fromURL and the cookies from setCookies.
+//     (Done at time tNow + 0 ms.)
+//  2. Check that the entries in the jar matches content.
+//     (Done at time tNow + 1001 ms.)
+//  3. For each query in tests: Check that Cookies with toURL yields the
+//     cookies in want.
+//     (Query n done at tNow + (n+2)*1001 ms.)
 type jarTest struct {
 	description string   // The description of what this test is supposed to test
 	fromURL     string   // The full URL of the request from which Set-Cookie headers where received
@@ -1897,7 +1897,7 @@ var allCookiesTests = []struct {
 	set: []setCommand{{
 		url: mustParseURL("https://www.google.com/"),
 		cookies: []*http.Cookie{
-			&http.Cookie{
+			{
 				Name:    "test-cookie",
 				Value:   "test-value",
 				Expires: tNow.Add(24 * time.Hour),
@@ -1905,7 +1905,7 @@ var allCookiesTests = []struct {
 		},
 	}},
 	expectCookies: []*http.Cookie{
-		&http.Cookie{
+		{
 			Name:     "test-cookie",
 			Value:    "test-value",
 			Domain:   "www.google.com",
@@ -1920,7 +1920,7 @@ var allCookiesTests = []struct {
 	set: []setCommand{{
 		url: mustParseURL("https://www.google.com/"),
 		cookies: []*http.Cookie{
-			&http.Cookie{
+			{
 				Name:    "test-cookie",
 				Value:   "test-value",
 				Expires: tNow.Add(-24 * time.Hour),
@@ -1932,7 +1932,7 @@ var allCookiesTests = []struct {
 	set: []setCommand{{
 		url: mustParseURL("https://www.google.com/subpath/place"),
 		cookies: []*http.Cookie{
-			&http.Cookie{
+			{
 				Name:    "test-cookie",
 				Value:   "test-value",
 				Expires: tNow.Add(24 * time.Hour),
@@ -1940,7 +1940,7 @@ var allCookiesTests = []struct {
 		},
 	}},
 	expectCookies: []*http.Cookie{
-		&http.Cookie{
+		{
 			Name:     "test-cookie",
 			Value:    "test-value",
 			Domain:   "www.google.com",
@@ -1955,7 +1955,7 @@ var allCookiesTests = []struct {
 	set: []setCommand{{
 		url: mustParseURL("https://www.google.com/"),
 		cookies: []*http.Cookie{
-			&http.Cookie{
+			{
 				Name:    "test-cookie",
 				Value:   "test-value",
 				Expires: tNow.Add(24 * time.Hour),
@@ -1964,7 +1964,7 @@ var allCookiesTests = []struct {
 	}, {
 		url: mustParseURL("https://www.google.com/subpath/"),
 		cookies: []*http.Cookie{
-			&http.Cookie{
+			{
 				Name:    "test-cookie",
 				Value:   "test-value",
 				Expires: tNow.Add(24 * time.Hour),
@@ -1972,7 +1972,7 @@ var allCookiesTests = []struct {
 		},
 	}},
 	expectCookies: []*http.Cookie{
-		&http.Cookie{
+		{
 			Name:     "test-cookie",
 			Value:    "test-value",
 			Domain:   "www.google.com",
@@ -1981,7 +1981,7 @@ var allCookiesTests = []struct {
 			HttpOnly: false,
 			Expires:  tNow.Add(24 * time.Hour),
 		},
-		&http.Cookie{
+		{
 			Name:     "test-cookie",
 			Value:    "test-value",
 			Domain:   "www.google.com",
@@ -2022,12 +2022,12 @@ func TestRemoveCookies(t *testing.T) {
 	jar.SetCookies(
 		mustParseURL("https://www.google.com"),
 		[]*http.Cookie{
-			&http.Cookie{
+			{
 				Name:    "test-cookie",
 				Value:   "test-value",
 				Expires: time.Now().Add(24 * time.Hour),
 			},
-			&http.Cookie{
+			{
 				Name:    "test-cookie2",
 				Value:   "test-value",
 				Expires: time.Now().Add(24 * time.Hour),
@@ -2076,12 +2076,12 @@ func TestFilter(t *testing.T) {
 	j.SetCookies(
 		google,
 		[]*http.Cookie{
-			&http.Cookie{
+			{
 				Name:    "test-cookie",
 				Value:   "test-value",
 				Expires: time.Now().Add(24 * time.Hour),
 			},
-			&http.Cookie{
+			{
 				Name:  "test-cookie2",
 				Value: "test-value",
 			},
@@ -2142,12 +2142,12 @@ func testRemoveAllHost(t *testing.T, setURL *url.URL, removeHost string, shouldR
 	jar.SetCookies(
 		google,
 		[]*http.Cookie{
-			&http.Cookie{
+			{
 				Name:    "test-cookie",
 				Value:   "test-value",
 				Expires: time.Now().Add(24 * time.Hour),
 			},
-			&http.Cookie{
+			{
 				Name:    "test-cookie2",
 				Value:   "test-value",
 				Expires: time.Now().Add(24 * time.Hour),
@@ -2162,12 +2162,12 @@ func testRemoveAllHost(t *testing.T, setURL *url.URL, removeHost string, shouldR
 	jar.SetCookies(
 		setURL,
 		[]*http.Cookie{
-			&http.Cookie{
+			{
 				Name:    "test-cookie3",
 				Value:   "test-value",
 				Expires: time.Now().Add(24 * time.Hour),
 			},
-			&http.Cookie{
+			{
 				Name:    "test-cookie4",
 				Value:   "test-value",
 				Expires: time.Now().Add(24 * time.Hour),
@@ -2202,12 +2202,12 @@ func TestRemoveAll(t *testing.T) {
 	jar.SetCookies(
 		mustParseURL("https://www.google.com"),
 		[]*http.Cookie{
-			&http.Cookie{
+			{
 				Name:    "test-cookie",
 				Value:   "test-value",
 				Expires: time.Now().Add(24 * time.Hour),
 			},
-			&http.Cookie{
+			{
 				Name:    "test-cookie2",
 				Value:   "test-value",
 				Expires: time.Now().Add(24 * time.Hour),
@@ -2217,12 +2217,12 @@ func TestRemoveAll(t *testing.T) {
 	jar.SetCookies(
 		mustParseURL("https://foo.com"),
 		[]*http.Cookie{
-			&http.Cookie{
+			{
 				Name:    "test-cookie3",
 				Value:   "test-value",
 				Expires: time.Now().Add(24 * time.Hour),
 			},
-			&http.Cookie{
+			{
 				Name:    "test-cookie4",
 				Value:   "test-value",
 				Expires: time.Now().Add(24 * time.Hour),
