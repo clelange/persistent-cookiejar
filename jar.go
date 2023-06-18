@@ -28,9 +28,9 @@ import (
 )
 
 // PublicSuffixList provides the public suffix of a domain. For example:
-//      - the public suffix of "example.com" is "com",
-//      - the public suffix of "foo1.foo2.foo3.co.uk" is "co.uk", and
-//      - the public suffix of "bar.pvt.k12.ma.us" is "pvt.k12.ma.us".
+//   - the public suffix of "example.com" is "com",
+//   - the public suffix of "foo1.foo2.foo3.co.uk" is "co.uk", and
+//   - the public suffix of "bar.pvt.k12.ma.us" is "pvt.k12.ma.us".
 //
 // Implementations of PublicSuffixList must be safe for concurrent use by
 // multiple goroutines.
@@ -529,10 +529,7 @@ func canonicalHost(host string) (string, error) {
 			return "", err
 		}
 	}
-	if strings.HasSuffix(host, ".") {
-		// Strip trailing dot from fully qualified domain names.
-		host = host[:len(host)-1]
-	}
+	host = strings.TrimSuffix(host, ".")
 	return toASCII(host)
 }
 
@@ -670,7 +667,7 @@ var (
 // endOfTime is the time when session (non-persistent) cookies expire.
 // This instant is representable in most date/time formats (not just
 // Go's time.Time) and should be far enough in the future.
-var endOfTime = time.Date(9999, 12, 31, 23, 59, 59, 0, time.UTC)
+// var endOfTime = time.Date(9999, 12, 31, 23, 59, 59, 0, time.UTC)
 
 // domainAndType determines the cookie's domain and hostOnly attribute.
 func (j *Jar) domainAndType(host, domain string) (string, bool, error) {
@@ -735,8 +732,8 @@ func (j *Jar) domainAndType(host, domain string) (string, bool, error) {
 // DefaultCookieFile returns the default cookie file to use
 // for persisting cookie data.
 // The following names will be used in decending order of preference:
-//	- the value of the $GOCOOKIES environment variable.
-//	- $HOME/.go-cookies
+//   - the value of the $GOCOOKIES environment variable.
+//   - $HOME/.go-cookies
 func DefaultCookieFile() string {
 	if f := os.Getenv("GOCOOKIES"); f != "" {
 		return f

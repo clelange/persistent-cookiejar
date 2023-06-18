@@ -7,7 +7,6 @@ package cookiejar
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -1351,7 +1350,7 @@ var mergeTests = []struct {
 }}
 
 func TestSaveMerge(t *testing.T) {
-	dir, err := ioutil.TempDir("", "cookiejar-test")
+	dir, err := os.MkdirTemp("", "cookiejar-test")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1392,7 +1391,7 @@ func TestMergeConcurrent(t *testing.T) {
 	// so we don't test that.
 	const N = 10
 
-	f, err := ioutil.TempFile("", "cookiejar-test")
+	f, err := os.CreateTemp("", "cookiejar-test")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1496,7 +1495,7 @@ var serializeTestURL, _ = url.Parse("http://example.com/x")
 
 func TestLoadSave(t *testing.T) {
 	c := qt.New(t)
-	d, err := ioutil.TempDir("", "")
+	d, err := os.MkdirTemp("", "")
 	c.Assert(err, qt.Equals, nil)
 	defer os.RemoveAll(d)
 	file := filepath.Join(d, "cookies")
@@ -1519,11 +1518,11 @@ func TestMarshalJSON(t *testing.T) {
 	data, err := j.MarshalJSON()
 	c.Assert(err, qt.Equals, nil)
 	// Save them to disk.
-	d, err := ioutil.TempDir("", "")
+	d, err := os.MkdirTemp("", "")
 	c.Assert(err, qt.Equals, nil)
 	defer os.RemoveAll(d)
 	file := filepath.Join(d, "cookies")
-	err = ioutil.WriteFile(file, data, 0600)
+	err = os.WriteFile(file, data, 0600)
 	c.Assert(err, qt.Equals, nil)
 	// Load cookies from the file.
 	j1 := newTestJar(file)
@@ -1534,7 +1533,7 @@ func TestMarshalJSON(t *testing.T) {
 func TestLoadSaveWithNoPersist(t *testing.T) {
 	// Create a cookie file so that we can verify
 	// that it's not read when NoPersist is set.
-	d, err := ioutil.TempDir("", "")
+	d, err := os.MkdirTemp("", "")
 	if err != nil {
 		t.Fatalf("cannot make temp dir: %v", err)
 	}
@@ -1571,7 +1570,7 @@ func TestLoadSaveWithNoPersist(t *testing.T) {
 }
 
 func TestLoadNonExistentParent(t *testing.T) {
-	d, err := ioutil.TempDir("", "")
+	d, err := os.MkdirTemp("", "")
 	if err != nil {
 		t.Fatalf("cannot make temp dir: %v", err)
 	}
@@ -1587,7 +1586,7 @@ func TestLoadNonExistentParent(t *testing.T) {
 }
 
 func TestLoadNonExistentParentOfParent(t *testing.T) {
-	d, err := ioutil.TempDir("", "")
+	d, err := os.MkdirTemp("", "")
 	if err != nil {
 		t.Fatalf("cannot make temp dir: %v", err)
 	}
@@ -1605,7 +1604,7 @@ func TestLoadNonExistentParentOfParent(t *testing.T) {
 func TestLoadOldFormat(t *testing.T) {
 	// Check that loading the old format (a JSON object)
 	// doesn't result in an error.
-	f, err := ioutil.TempFile("", "cookiejar-test")
+	f, err := os.CreateTemp("", "cookiejar-test")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1624,7 +1623,7 @@ func TestLoadOldFormat(t *testing.T) {
 }
 
 func TestLoadInvalidJSON(t *testing.T) {
-	f, err := ioutil.TempFile("", "cookiejar-test")
+	f, err := os.CreateTemp("", "cookiejar-test")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1647,7 +1646,7 @@ func TestLoadInvalidJSON(t *testing.T) {
 }
 
 func TestLoadDifferentPublicSuffixList(t *testing.T) {
-	f, err := ioutil.TempFile("", "cookiejar-test")
+	f, err := os.CreateTemp("", "cookiejar-test")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1717,7 +1716,7 @@ func TestLoadDifferentPublicSuffixList(t *testing.T) {
 }
 
 func TestLockFile(t *testing.T) {
-	d, err := ioutil.TempDir("", "cookiejar_test")
+	d, err := os.MkdirTemp("", "cookiejar_test")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1994,7 +1993,7 @@ var allCookiesTests = []struct {
 }}
 
 func TestAllCookies(t *testing.T) {
-	dir, err := ioutil.TempDir("", "cookiejar-test")
+	dir, err := os.MkdirTemp("", "cookiejar-test")
 	if err != nil {
 		t.Fatal(err)
 	}
