@@ -1,6 +1,8 @@
 # cookiejar
---
-    import "github.com/juju/persistent-cookiejar"
+
+```go
+import "github.com/clelange/persistent-cookiejar"
+```
 
 Package cookiejar implements an in-memory RFC 6265-compliant http.CookieJar.
 
@@ -9,18 +11,19 @@ methods for dumping the cookies to persistent storage and retrieving them.
 
 ## Usage
 
-#### func  DefaultCookieFile
+### func DefaultCookieFile
 
 ```go
 func DefaultCookieFile() string
 ```
+
 DefaultCookieFile returns the default cookie file to use for persisting cookie
 data. The following names will be used in decending order of preference:
 
-    - the value of the $GOCOOKIES environment variable.
-    - $HOME/.go-cookies
+- the value of the `$GOCOOKIES` environment variable.
+- `$HOME/.go-cookies`
 
-#### type Jar
+### type Jar
 
 ```go
 type Jar struct {
@@ -29,44 +32,48 @@ type Jar struct {
 
 Jar implements the http.CookieJar interface from the net/http package.
 
-#### func  New
+### func New
 
 ```go
 func New(o *Options) (*Jar, error)
 ```
-New returns a new cookie jar. A nil *Options is equivalent to a zero Options.
 
-New will return an error if the cookies could not be loaded from the file for
+`New` returns a new cookie jar. A `nil` `*Options` is equivalent to a zero `Options`.
+
+`New` will return an error if the cookies could not be loaded from the file for
 any reason than if the file does not exist.
 
-#### func (*Jar) Cookies
+### func (*Jar) Cookies
 
 ```go
 func (j *Jar) Cookies(u *url.URL) (cookies []*http.Cookie)
 ```
-Cookies implements the Cookies method of the http.CookieJar interface.
+
+`Cookies` implements the `Cookies` method of the `http.CookieJar` interface.
 
 It returns an empty slice if the URL's scheme is not HTTP or HTTPS.
 
-#### func (*Jar) Save
+### func (*Jar) Save
 
 ```go
 func (j *Jar) Save() error
 ```
-Save saves the cookies to the persistent cookie file. Before the file is
-written, it reads any cookies that have been stored from it and merges them into
-j.
 
-#### func (*Jar) SetCookies
+`Save` saves the cookies to the persistent cookie file. Before the file is
+written, it reads any cookies that have been stored from it and merges them into
+`j`.
+
+### func (*Jar) SetCookies
 
 ```go
 func (j *Jar) SetCookies(u *url.URL, cookies []*http.Cookie)
 ```
-SetCookies implements the SetCookies method of the http.CookieJar interface.
+
+`SetCookies` implements the `SetCookies` method of the `http.CookieJar` interface.
 
 It does nothing if the URL's scheme is not HTTP or HTTPS.
 
-#### type Options
+### type Options
 
 ```go
 type Options struct {
@@ -83,9 +90,9 @@ type Options struct {
 }
 ```
 
-Options are the options for creating a new Jar.
+`Options` are the options for creating a new `Jar`.
 
-#### type PublicSuffixList
+### type PublicSuffixList
 
 ```go
 type PublicSuffixList interface {
@@ -103,13 +110,13 @@ type PublicSuffixList interface {
 }
 ```
 
-PublicSuffixList provides the public suffix of a domain. For example:
+`PublicSuffixList` provides the public suffix of a domain. For example:
 
-    - the public suffix of "example.com" is "com",
-    - the public suffix of "foo1.foo2.foo3.co.uk" is "co.uk", and
-    - the public suffix of "bar.pvt.k12.ma.us" is "pvt.k12.ma.us".
+- the public suffix of "example.com" is "com",
+- the public suffix of "foo1.foo2.foo3.co.uk" is "co.uk", and
+- the public suffix of "bar.pvt.k12.ma.us" is "pvt.k12.ma.us".
 
-Implementations of PublicSuffixList must be safe for concurrent use by multiple
+Implementations of `PublicSuffixList` must be safe for concurrent use by multiple
 goroutines.
 
 An implementation that always returns "" is valid and may be useful for testing
